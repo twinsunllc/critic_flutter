@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_response.dart';
-import 'package:meta/meta.dart';
 
 class BugReportRequest{
   String apiToken;

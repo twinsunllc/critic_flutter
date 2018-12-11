@@ -1,42 +1,76 @@
-# inventiv_critic_flutter_example
-
-This plugin allows Flutter apps to interact with the Inventiv Critic system for bug tracking and reporting. You will need to have a Critic account to properly utilize this. Please visit [the Critic website](https://critictracking.com/getting-started/) for more information.
-
-## How to use
-
-Step 1: Initialize the Critic library using your api key:
+# example/main.dart
 ```
-String key = 'your api key';
-Critic().initialize(key);
-```
+import 'package:flutter/material.dart';
 
-Step 2: Create a new Bug Report using the .create const:
-```
-BugReport report = BugReport.create(
-    description: 'description text',
-    stepsToReproduce: 'steps to reproduce text',
-);
-```
+import 'package:inventiv_critic_flutter/critic.dart';
+import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 
-Step 3: Use the Critic() singleton to submit your BugReport (example using Futures):
-```
-Critic().submitReport(report).then(
-    (BugReport successfulReport) {
-      //success!
+void main() => runApp(MyApp());
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  TextEditingController _descriptionController = new TextEditingController(),
+      _reproduceController = new TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    Critic().initialize('gJ44GxttrahyVBFs4k3jb8T1');
+  }
+
+  void _submitReport(BuildContext context) {
+    BugReport report = BugReport.create(
+        description: _descriptionController.text,
+        stepsToReproduce: _reproduceController.text);
+    Critic().submitReport(report).then((BugReport successfulReport) {
+      Scaffold.of(context).showSnackBar(new SnackBar(
+        content: new Text('Bug Report has been filed, check console'),
+      ));
+      print(
+          'Successfully logged!\ndescription: ${successfulReport.description}\nsteps to reproduce: ${successfulReport.stepsToReproduce}');
     }).catchError((Object error) {
-      //failure
+      print(error.toString());
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Builder(
+            builder: (context) => Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Text('Enter a description'),
+                    TextField(
+                      controller: _descriptionController,
+                    ),
+                    Text('Enter steps to reproduce'),
+                    TextField(
+                      controller: _reproduceController,
+                    ),
+                    MaterialButton(
+                      color: Colors.grey,
+                      onPressed: () {
+                        _submitReport(context);
+                      },
+                      child: Text('Test Submit'),
+                    ),
+                  ],
+                ),
+          ),
+        ),
+      ),
+    );
+  }
+}
 ```
-
-Step 4: Review bugs submitted for your organization using [Critic's web portal](https://critic.inventiv.io)
-
-## Getting Started
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.io/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.io/docs/cookbook)
-
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.

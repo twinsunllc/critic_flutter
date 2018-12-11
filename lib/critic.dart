@@ -46,7 +46,7 @@ class Critic {
 
     App appData = await _createAppData();
     Device deviceData = await _createDeviceData();
-    PingResponse response = await Api.ping(PingRequest(apiToken: _apiToken, app: appData, device: deviceData)).catchError(
+    AppInstall response = await Api.ping(PingRequest(apiToken: _apiToken, app: appData, device: deviceData)).catchError(
       (Object error){
         print('Ping to critic failed: ' + error.toString());
         return false;
@@ -60,6 +60,7 @@ class Critic {
     assert(_apiToken != null, 'The API Token must be initialized using the initialize(String) call.');
     assert(_appId != null, 'The App ID must be initialized. Make sure to call initialize(String). If you have done this, please check the logs to see why it failed.');
     BugReportRequest requestData = BugReportRequest(
+      appInstall: AppInstall(id: _appId),
       apiToken: _apiToken,
       report: report,
     );

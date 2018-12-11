@@ -1,11 +1,11 @@
-class PingResponse{
+class AppInstall{
   int id;
 
-  PingResponse({this.id});
+  AppInstall({this.id});
 
-  factory PingResponse.fromJson(Map<String,dynamic> jsonBody){
+  factory AppInstall.fromJson(Map<String,dynamic> jsonBody){
     Map<String,dynamic> json = jsonBody['app_install'];
-    return PingResponse(
+    return AppInstall(
       id: json['id'],
     );
   }

@@ -10,9 +10,9 @@ import 'package:inventiv_critic_flutter/modal/report_request_modal.dart';
 final String _apiUrl = ' https://critic.inventiv.io/api/v2';
 
 class Api {
-  static Future<PingResponse> ping(PingRequest report) async {
+  static Future<AppInstall> ping(PingRequest report) async {
     return await http.post('$_apiUrl/ping', body: json.encode(report), headers: { HttpHeaders.contentTypeHeader: 'application/json' })
-      .then((response) => PingResponse.fromJson(json.decode(response.body)));
+      .then((response) => AppInstall.fromJson(json.decode(response.body)));
   }
 
   static Future<BugReport> submitReport(BugReportRequest report) async {

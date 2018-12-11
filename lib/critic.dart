@@ -26,19 +26,19 @@ class Critic {
 
   Future<App> _createAppData() async{
     final PackageInfo info = await PackageInfo.fromPlatform();
-    return App.create(name: info.appName, package: info.packageName, platform: Platform.operatingSystem, versionName: info.version);
+    return App.create(name: info.appName.isEmpty ? 'Unavailable' : info.appName, package: info.packageName, platform: Platform.isAndroid ? 'Android' : 'iOS', versionName: info.version, versionCode: info.buildNumber);
   }
 
   Future<Device> _createDeviceData() async{
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if(Platform.isAndroid){
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      return Device(identifier: androidInfo.id, manufacturer: androidInfo.manufacturer, model: androidInfo.model, networkCarrier: 'Not available', platform: Platform.operatingSystem, platformVersion: Platform.version);
+      return Device(identifier: androidInfo.id, manufacturer: androidInfo.manufacturer, model: androidInfo.model, networkCarrier: 'Not available', platform: 'Android', platformVersion: Platform.version);
     } else if (Platform.isIOS){
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      return Device(identifier: iosInfo.identifierForVendor, manufacturer: 'Apple', model: iosInfo.model, networkCarrier: 'Not available', platform: iosInfo.systemName, platformVersion:iosInfo.systemVersion);
+      return Device(identifier: iosInfo.identifierForVendor, manufacturer: 'Apple', model: iosInfo.model, networkCarrier: 'Not available', platform: 'iOS', platformVersion:iosInfo.systemVersion);
     }
-    return Device(identifier: 'unknown', manufacturer: 'unknown', model: 'unknown', networkCarrier: 'Not available', platform: Platform.operatingSystem, platformVersion: Platform.version);
+    return Device(identifier: 'unknown', manufacturer: 'unknown', model: 'unknown', networkCarrier: 'Not available', platform: 'Unknown', platformVersion: Platform.version);
   }
 
   Future<bool> initialize(String apiToken) async{

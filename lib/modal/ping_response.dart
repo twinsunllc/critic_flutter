@@ -9,4 +9,8 @@ class AppInstall{
       id: json['id'],
     );
   }
+
+  Map<String, dynamic> toJson() => <String, dynamic>{
+    'id': id,
+  };
 }

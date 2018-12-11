@@ -44,6 +44,9 @@ class Attachment{
 
   static List<Attachment> fromList(List<dynamic> items) {
     final List<Attachment> attachments = <Attachment>[];
+    if(items == null){
+      return attachments;
+    }
     for (final dynamic item in items) {
       attachments.add(new Attachment.fromJson(item));
     }

@@ -6,7 +6,7 @@ class App{
 
   App({this.name, this.package, this.platform, this.version});
 
-  factory App.create({@required String name, @required String package, @required String platform, int versionCode, String versionName}){
+  factory App.create({@required String name, @required String package, @required String platform, String versionCode, String versionName}){
     _Version version = new _Version(code: versionCode, name: versionName);
     return App(name: name, package: package, platform: platform, version: version);
   }
@@ -29,8 +29,7 @@ class App{
 }
 
 class _Version{
-  int code;
-  String name;
+  String code, name;
 
   _Version({this.code, this.name});
 

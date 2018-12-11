@@ -1,6 +1,6 @@
 # critic_flutter
 
-A Flutter plugin for Inventiv's Critic tool (https://critictracking.com/)
+This plugin allows Flutter apps to interact with the Inventiv Critic system for bug tracking and reporting. You will need to have a Critic account to properly utilize this. Please visit [the Critic website](https://critictracking.com/getting-started/) for more information.
 
 ## How to use
 

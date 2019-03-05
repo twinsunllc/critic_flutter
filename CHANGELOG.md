@@ -1,3 +1,6 @@
+## 0.0.4
+Added attachment support.
+
 ## 0.0.2
 Cleaned up readme files for better published documents.
 

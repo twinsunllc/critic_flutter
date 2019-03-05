@@ -5,7 +5,7 @@ class BugReport{
   String description, stepsToReproduce, userIdentifier, createdAt, updatedAt;
   List<Attachment> attachments;
 
-  BugReport({this.description, this.stepsToReproduce, this.userIdentifier, this.createdAt, this.updatedAt, this.attachments});
+  BugReport({this.description = '', this.stepsToReproduce, this.userIdentifier, this.createdAt, this.updatedAt, this.attachments});
 
   BugReport.create({@required this.description, @required this.stepsToReproduce, this.userIdentifier = 'No user id provided'})
     : assert (description != null), assert(stepsToReproduce != null), assert (userIdentifier != null);
@@ -29,9 +29,9 @@ class BugReport{
 }
 
 class Attachment{
-  String name, size, type, uploadedAt, url;
+  String name, size, type, uploadedAt, url, path;
 
-  Attachment({this.name, this.size, this.type, this.uploadedAt, this.url});
+  Attachment({this.name, this.size, this.type, this.uploadedAt, this.url, this.path});
 
   factory Attachment.fromJson(Map<String,dynamic> json){
     return Attachment(

@@ -18,7 +18,14 @@ BugReport report = BugReport.create(
 );
 ```
 
-Step 3: Use the Critic() singleton to submit your BugReport (example using Futures):
+Step 3: Attach a file, if necessary
+```
+File file = File('path to file');
+report.attachments = <Attachment>[];
+report.attachments.add(Attachment(name: 'test file', path: file.path));
+```
+
+Step 4: Use the Critic() singleton to submit your BugReport (example using Futures):
 ```
 Critic().submitReport(report).then(
     (BugReport successfulReport) {
@@ -28,4 +35,4 @@ Critic().submitReport(report).then(
     });
 ```
 
-Step 4: Review bugs submitted for your organization using [Critic's web portal](https://critic.inventiv.io)
+Step 5: Review bugs submitted for your organization using [Critic's web portal](https://critic.inventiv.io)

@@ -10,7 +10,6 @@ import 'package:inventiv_critic_flutter/modal/ping_request_modal.dart';
 import 'package:inventiv_critic_flutter/modal/ping_response.dart';
 import 'package:inventiv_critic_flutter/modal/report_request_modal.dart';
 import 'package:dio/dio.dart';
-import "package:system_info/system_info.dart";
 
 final String _apiUrl = 'https://critic.inventiv.io/api/v2';
 

@@ -31,12 +31,12 @@ class Critic {
 
   Future<Device> _createDeviceData() async{
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-    if(Platform.isAndroid){
+    if(Platform.isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      return Device(identifier: androidInfo.id, manufacturer: androidInfo.manufacturer, model: androidInfo.model, networkCarrier: 'Not available', platform: 'Android', platformVersion: Platform.version);
-    } else if (Platform.isIOS){
+      return Device(identifier: androidInfo.id, manufacturer: androidInfo.manufacturer, model: androidInfo.model, networkCarrier: 'Not available', platform: 'Android', platformVersion: androidInfo.version.release);
+    } else if (Platform.isIOS) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
-      return Device(identifier: iosInfo.identifierForVendor, manufacturer: 'Apple', model: iosInfo.model, networkCarrier: 'Not available', platform: 'iOS', platformVersion:iosInfo.systemVersion);
+      return Device(identifier: iosInfo.identifierForVendor, manufacturer: 'Apple', model: iosInfo.model, networkCarrier: 'Not available', platform: 'iOS', platformVersion: iosInfo.systemVersion);
     }
     return Device(identifier: 'unknown', manufacturer: 'unknown', model: 'unknown', networkCarrier: 'Not available', platform: 'Unknown', platformVersion: Platform.version);
   }

@@ -1,3 +1,6 @@
+## 0.0.5
+Multiple attachments can be uploaded properly. Add battery and network connection to device status.
+
 ## 0.0.4
 Added attachment support.
 

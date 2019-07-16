@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:connectivity/connectivity.dart';
+import 'package:device_info/device_info.dart';
+import 'package:battery/battery.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_request_modal.dart';
@@ -22,8 +25,34 @@ class Api {
     });
   }
 
+  static Future<Map<String, dynamic>> deviceStatus() async {
+    var connectivity = await Connectivity().checkConnectivity();
+
+    var battery = Battery();
+
+    var returnVal = <String, dynamic>{
+      'device_status[network_cell_connected]': connectivity == ConnectivityResult.mobile,
+      'device_status[network_wifi_connected]': connectivity == ConnectivityResult.wifi,
+    };
+
+    try {
+      returnVal.addAll(<String, dynamic>{
+        'device_status[battery_charging]': (await battery.onBatteryStateChanged.first) != BatteryState.discharging,
+        'device_status[battery_level]': await battery.batteryLevel,
+      });
+    } catch (err) {
+      print(err);
+    }
+
+    return returnVal;
+  }
+
   static Future<BugReport> submitReport(BugReportRequest submitReportRequest) async {
     Dio dio = new Dio();
+
+    var attachments =
+        submitReportRequest.report.attachments?.map((Attachment attachment) => UploadFileInfo(File(attachment.path), attachment.name))?.toList() ??
+            [];
 
     FormData formData = new FormData.from({
       'api_token': submitReportRequest.apiToken,
@@ -31,22 +60,17 @@ class Api {
       'bug_report[description]': submitReportRequest.report.description,
       'bug_report[steps_to_reproduce]': submitReportRequest.report.stepsToReproduce,
       'bug_report[user_identifier]': submitReportRequest.report.userIdentifier,
+      'bug_report[attachments][]': attachments,
     });
-    if (submitReportRequest.report.attachments != null) {
-      submitReportRequest.report.attachments.forEach((Attachment attachment) async {
-        formData.add('bug_report[attachments][]', UploadFileInfo(File(attachment.path), attachment.name));
-      });
-    }
-    Response response = await dio.post('$_apiUrl/bug_reports', data: formData).then(
-      (response){
-        print(response.data.toString());
-        return response;
-      }
-    ).catchError(
-      (err){
-        print(err.toString());
-      }
-    );
+
+    formData.addAll(await Api.deviceStatus());
+
+    Response response = await dio.post('$_apiUrl/bug_reports', data: formData).then((response) {
+      print(response.data.toString());
+      return response;
+    }).catchError((err) {
+      print(err.toString());
+    });
     print(response.data.toString());
     return BugReport.fromJson(response.data);
 

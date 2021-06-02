@@ -1,3 +1,6 @@
+## 0.0.7
+Upgraded all dependencies that were causing issues with newest Flutter versions (1.17.x).
+
 ## 0.0.5
 Multiple attachments can be uploaded properly. Add battery and network connection to device status.
 

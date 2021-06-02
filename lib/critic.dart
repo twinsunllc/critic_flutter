@@ -26,7 +26,7 @@ class Critic {
 
   Future<App> _createAppData() async{
     final PackageInfo info = await PackageInfo.fromPlatform();
-    return App.create(name: info.appName.isEmpty ? 'Unavailable' : info.appName, package: info.packageName, platform: Platform.isAndroid ? 'Android' : 'iOS', versionName: info.version, versionCode: info.buildNumber);
+    return App.create(name: (info.appName?.isEmpty ?? true) ? 'Unavailable' : info.appName, package: info.packageName, platform: Platform.isAndroid ? 'Android' : 'iOS', versionName: info.version, versionCode: info.buildNumber);
   }
 
   Future<Device> _createDeviceData() async{

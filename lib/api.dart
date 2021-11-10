@@ -57,10 +57,10 @@ class Api {
       ..fields.addAll(await Api.deviceStatus());
 
     await Future.wait(submitReportRequest.report.attachments?.map((attachment) async {
-      request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path));
+      request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path, filename: attachment.name));
     }));
 
-    final Completer completer = Completer();
+    final Completer<BugReport> completer = Completer<BugReport>();
 
     request.send().then((response) {
       print('Response: ${response.statusCode}');

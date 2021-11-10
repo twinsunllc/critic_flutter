@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -8,15 +9,13 @@ import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_request_modal.dart';
 import 'package:inventiv_critic_flutter/modal/ping_response.dart';
 import 'package:inventiv_critic_flutter/modal/report_request_modal.dart';
-import 'package:dio/dio.dart';
 
 final String _apiUrl = 'https://critic.inventiv.io/api/v2';
 
 class Api {
   static Future<AppInstall> ping(PingRequest pingRequest) async {
-    return await http.post('$_apiUrl/ping',
-        body: json.encode(pingRequest.toJson()),
-        headers: {HttpHeaders.contentTypeHeader: 'application/json'}).then((response) {
+    return await http.post(Uri.parse('$_apiUrl/ping'),
+        body: json.encode(pingRequest.toJson()), headers: {HttpHeaders.contentTypeHeader: 'application/json'}).then((response) {
       if (response.statusCode == 200) {
         return AppInstall.fromJson(json.decode(response.body));
       } else {
@@ -37,8 +36,7 @@ class Api {
 
     try {
       returnVal.addAll(<String, String>{
-        'device_status[battery_charging]':
-            ((await battery.onBatteryStateChanged.first) != BatteryState.discharging).toString(),
+        'device_status[battery_charging]': ((await battery.onBatteryStateChanged.first) != BatteryState.discharging).toString(),
         'device_status[battery_level]': (await battery.batteryLevel).toString(),
       });
     } catch (err) {
@@ -49,38 +47,32 @@ class Api {
   }
 
   static Future<BugReport> submitReport(BugReportRequest submitReportRequest) async {
-    Dio dio = new Dio();
+    final uri = Uri.parse('$_apiUrl/bug_reports');
+    final request = http.MultipartRequest('POST', uri)
+      ..fields['api_token'] = submitReportRequest.apiToken
+      ..fields['app_install[id]'] = submitReportRequest.appInstall.id.toString()
+      ..fields['bug_report[description]'] = submitReportRequest.report.description
+      ..fields['bug_report[steps_to_reproduce]'] = submitReportRequest.report.stepsToReproduce
+      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier
+      ..fields.addAll(await Api.deviceStatus());
 
-    var attachments = submitReportRequest.report.attachments?.map((Attachment attachment) async {
-          var logFile = File(attachment.path);
-          var fileText = await logFile.readAsString();
-          print('fileText');
-          print(fileText);
-          return MultipartFile.fromString(fileText);
-        })?.toList() ??
-        [];
+    await Future.wait(submitReportRequest.report.attachments?.map((attachment) async {
+      request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path));
+    }));
 
-    print('attachments.length ${attachments.length}');
+    final Completer completer = Completer();
 
-    FormData formData = new FormData.fromMap({
-      'api_token': submitReportRequest.apiToken,
-      'app_install[id]': submitReportRequest.appInstall.id.toString(),
-      'bug_report[description]': submitReportRequest.report.description,
-      'bug_report[steps_to_reproduce]': submitReportRequest.report.stepsToReproduce,
-      'bug_report[user_identifier]': submitReportRequest.report.userIdentifier,
-      'bug_report[attachments][]': attachments,
+    request.send().then((response) {
+      print('Response: ${response.statusCode}');
+      final contents = StringBuffer();
+      response.stream.transform(utf8.decoder).listen((data) {
+        contents.write(data);
+      }, onDone: () {
+        print(contents.toString());
+        completer.complete(BugReport.fromJson(json.decode(contents.toString())));
+      });
     });
 
-    Map<String, String> thing = await Api.deviceStatus();
-    formData.fields.addAll(thing.entries);
-
-    Response response = await dio.post('$_apiUrl/bug_reports', data: formData).then((response) {
-      print(response.data.toString());
-      return response;
-    }).catchError((err) {
-      print(err.toString());
-    });
-    print(response.data.toString());
-    return BugReport.fromJson(response.data);
+    return completer.future;
   }
 }

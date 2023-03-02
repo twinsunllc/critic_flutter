@@ -14,8 +14,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  TextEditingController _descriptionController = new TextEditingController(),
-      _reproduceController = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController(), _reproduceController = new TextEditingController();
 
   @override
   void initState() {
@@ -24,11 +23,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _submitReport(BuildContext context, {bool withFile = false}) async {
-    BugReport report = BugReport.create(
-        description: _descriptionController.text,
-        stepsToReproduce: _reproduceController.text);
+    BugReport report = BugReport.create(description: _descriptionController.text, stepsToReproduce: _reproduceController.text);
 
-    if(withFile){
+    if (withFile) {
       report.attachments = <Attachment>[];
       Directory dir = await getApplicationDocumentsDirectory();
       File file = File('${dir.path}/test.txt');
@@ -40,8 +37,7 @@ class _MyAppState extends State<MyApp> {
       Scaffold.of(context).showSnackBar(new SnackBar(
         content: new Text('Bug Report has been filed, check console'),
       ));
-      print(
-          'Successfully logged!\ndescription: ${successfulReport.description}\nsteps to reproduce: ${successfulReport.stepsToReproduce}');
+      print('Successfully logged!\ndescription: ${successfulReport.description}\nsteps to reproduce: ${successfulReport.stepsToReproduce}');
     }).catchError((Object error) {
       print(error.toString());
     });
@@ -58,32 +54,32 @@ class _MyAppState extends State<MyApp> {
           padding: const EdgeInsets.all(25.0),
           child: Builder(
             builder: (context) => Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Text('Enter a description'),
-                    TextField(
-                      controller: _descriptionController,
-                    ),
-                    Text('Enter steps to reproduce'),
-                    TextField(
-                      controller: _reproduceController,
-                    ),
-                    MaterialButton(
-                      color: Colors.grey,
-                      onPressed: () {
-                        _submitReport(context);
-                      },
-                      child: Text('Test Submit'),
-                    ),
-                    MaterialButton(
-                      color: Colors.grey,
-                      onPressed: () {
-                        _submitReport(context, withFile: true);
-                      },
-                      child: Text('Test Submit with file'),
-                    ),
-                  ],
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text('Enter a description'),
+                TextField(
+                  controller: _descriptionController,
                 ),
+                Text('Enter steps to reproduce'),
+                TextField(
+                  controller: _reproduceController,
+                ),
+                MaterialButton(
+                  color: Colors.grey,
+                  onPressed: () {
+                    _submitReport(context);
+                  },
+                  child: Text('Test Submit'),
+                ),
+                MaterialButton(
+                  color: Colors.grey,
+                  onPressed: () {
+                    _submitReport(context, withFile: true);
+                  },
+                  child: Text('Test Submit with file'),
+                ),
+              ],
+            ),
           ),
         ),
       ),

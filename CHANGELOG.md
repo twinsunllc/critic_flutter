@@ -1,3 +1,7 @@
+## 0.1.0
+
+Update dependencies to allow using flutter 3.7
+
 ## 0.0.8
 
 Remove dio lib

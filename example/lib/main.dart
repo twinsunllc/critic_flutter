@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     Critic().submitReport(report).then((BugReport successfulReport) {
-      Scaffold.of(context).showSnackBar(new SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
         content: new Text('Bug Report has been filed, check console'),
       ));
       print('Successfully logged!\ndescription: ${successfulReport.description}\nsteps to reproduce: ${successfulReport.stepsToReproduce}');

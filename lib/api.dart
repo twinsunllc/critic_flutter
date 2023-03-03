@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:battery/battery.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventiv_critic_flutter/modal/bug_report.dart';

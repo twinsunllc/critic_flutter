@@ -70,7 +70,7 @@ class Critic {
     Device deviceData = await _createDeviceData();
     AppInstall response = await Api.ping(PingRequest(apiToken: _apiToken, app: appData, device: deviceData)).catchError((Object error) {
       print('Ping to critic failed: ' + error.toString());
-      return false;
+      return Future<AppInstall>.error(false);
     });
     _appId = response.id;
     return true;

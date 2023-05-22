@@ -51,9 +51,9 @@ class Api {
     final request = http.MultipartRequest('POST', uri)
       ..fields['api_token'] = submitReportRequest.apiToken!
       ..fields['app_install[id]'] = submitReportRequest.appInstall.id.toString()
-      ..fields['bug_report[description]'] = submitReportRequest.report.description!
-      ..fields['bug_report[steps_to_reproduce]'] = submitReportRequest.report.stepsToReproduce!
-      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier!
+      ..fields['bug_report[description]'] = submitReportRequest.report.description ?? ''
+      ..fields['bug_report[steps_to_reproduce]'] = submitReportRequest.report.stepsToReproduce ?? ''
+      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier ?? ''
       ..fields.addAll(await Api.deviceStatus());
 
     if (submitReportRequest.report.attachments?.isNotEmpty ?? false) {

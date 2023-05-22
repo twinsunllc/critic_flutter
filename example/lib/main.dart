@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
       Directory dir = await getApplicationDocumentsDirectory();
       File file = File('${dir.path}/test.txt');
       File writtenFile = await file.writeAsString('Test file upload', mode: FileMode.write);
-      report.attachments.add(Attachment(name: 'test file', path: writtenFile.path));
+      report.attachments!.add(Attachment(name: 'test file', path: writtenFile.path));
     }
 
     Critic().submitReport(report).then((BugReport successfulReport) {

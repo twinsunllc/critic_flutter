@@ -3,14 +3,14 @@ description: Demonstrates how to use the inventiv_critic_flutter plugin.
 publish_to: 'none'
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^0.1.2
-  path_provider: ^2.0.13
+  cupertino_icons: ^1.0.5
+  path_provider: ^2.0.15
 
   inventiv_critic_flutter:
     path: ../

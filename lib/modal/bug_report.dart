@@ -25,7 +25,8 @@ class BugReport {
 }
 
 class Attachment {
-  String? name, size, type, uploadedAt, url, path;
+  String? name, type, uploadedAt, url, path;
+  int? size;
 
   Attachment({this.name, this.size, this.type, this.uploadedAt, this.url, this.path});
 

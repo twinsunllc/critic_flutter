@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:battery/battery.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_request_modal.dart';
@@ -49,16 +49,18 @@ class Api {
   static Future<BugReport> submitReport(BugReportRequest submitReportRequest) async {
     final uri = Uri.parse('$_apiUrl/bug_reports');
     final request = http.MultipartRequest('POST', uri)
-      ..fields['api_token'] = submitReportRequest.apiToken
+      ..fields['api_token'] = submitReportRequest.apiToken!
       ..fields['app_install[id]'] = submitReportRequest.appInstall.id.toString()
-      ..fields['bug_report[description]'] = submitReportRequest.report.description
-      ..fields['bug_report[steps_to_reproduce]'] = submitReportRequest.report.stepsToReproduce
-      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier
+      ..fields['bug_report[description]'] = submitReportRequest.report.description ?? ''
+      ..fields['bug_report[steps_to_reproduce]'] = submitReportRequest.report.stepsToReproduce ?? ''
+      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier ?? ''
       ..fields.addAll(await Api.deviceStatus());
 
-    await Future.wait(submitReportRequest.report.attachments?.map((attachment) async {
-      request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path, filename: attachment.name));
-    }));
+    if (submitReportRequest.report.attachments?.isNotEmpty ?? false) {
+      await Future.wait(submitReportRequest.report.attachments!.map((attachment) async {
+        request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path!, filename: attachment.name));
+      }));
+    }
 
     final Completer<BugReport> completer = Completer<BugReport>();
 

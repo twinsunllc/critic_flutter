@@ -20,13 +20,13 @@ class Critic {
     return _singleton;
   }
 
-  String _apiToken;
-  int _appId;
+  String? _apiToken;
+  int? _appId;
 
   Future<App> _createAppData() async {
     final PackageInfo info = await PackageInfo.fromPlatform();
     return App.create(
-        name: (info.appName?.isEmpty ?? true) ? 'Unavailable' : info.appName,
+        name: info.appName.isNotEmpty ? info.appName : 'Unavailable',
         package: info.packageName,
         platform: Platform.isAndroid ? 'Android' : 'iOS',
         versionName: info.version,

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:battery/battery.dart';
+import 'package:battery_plus/battery_plus.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_request_modal.dart';

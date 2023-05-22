@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ">=0.12.1 <0.14.0"
-  device_info_plus: ^8.1.0
-  package_info_plus: ^3.0.3
-  connectivity_plus: ^3.0.3
+  http: ^0.13.6
+  device_info_plus: ^9.0.1
+  package_info_plus: ^4.0.1
+  connectivity_plus: ^4.0.1
   mime: ^1.0.4
-  battery: ^1.0.1
+  battery_plus: ^4.0.1

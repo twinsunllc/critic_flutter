@@ -59,12 +59,14 @@ class Api {
       ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier ?? 'no user identifier'
       ..fields.addAll(await Api.deviceStatus());
 
-    await Future.wait(submitReportRequest.report.attachments?.map((attachment) async {
-      if (attachment.path != null) {
-        request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path!,
-            filename: attachment.name));
-      }
-    }) as Iterable<Future>);
+    if (submitReportRequest.report.attachments?.isNotEmpty ?? false) {
+      await Future.wait(submitReportRequest.report.attachments!.map((attachment) async {
+        if (attachment.path != null) {
+          request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path!,
+              filename: attachment.name));
+        }
+      }));
+    }
 
     final Completer<BugReport> completer = Completer<BugReport>();
 

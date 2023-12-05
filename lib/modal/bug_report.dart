@@ -1,10 +1,22 @@
+import 'package:flutter/foundation.dart';
+
 class BugReport {
   String? description, stepsToReproduce, userIdentifier, createdAt, updatedAt;
   List<Attachment>? attachments;
 
-  BugReport({this.description = '', this.stepsToReproduce, this.userIdentifier, this.createdAt, this.updatedAt, this.attachments});
+  BugReport({
+    this.description = '',
+    this.stepsToReproduce,
+    this.userIdentifier,
+    this.createdAt,
+    this.updatedAt,
+    this.attachments,
+  });
 
-  BugReport.create({required String this.description, required String this.stepsToReproduce, String this.userIdentifier = 'No user id provided'});
+  BugReport.create({@required this.description, @required this.stepsToReproduce, this.userIdentifier = 'No user id provided'})
+      : assert(description != null),
+        assert(stepsToReproduce != null),
+        assert(userIdentifier != null);
 
   factory BugReport.fromJson(Map<String, dynamic> json) {
     return BugReport(
@@ -25,8 +37,7 @@ class BugReport {
 }
 
 class Attachment {
-  String? name, type, uploadedAt, url, path;
-  int? size;
+  String? name, size, type, uploadedAt, url, path;
 
   Attachment({this.name, this.size, this.type, this.uploadedAt, this.url, this.path});
 

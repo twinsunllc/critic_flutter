@@ -1,10 +1,16 @@
 class App {
-  String? name, package, platform;
-  _Version? version;
+  String name, package, platform;
+  _Version version;
 
-  App({this.name, this.package, this.platform, this.version});
+  App({required this.name, required this.package, required this.platform, required this.version});
 
-  factory App.create({required String name, required String package, required String platform, String? versionCode, String? versionName}) {
+  factory App.create({
+    required String name,
+    required String package,
+    required String platform,
+    String? versionCode,
+    String? versionName,
+  }) {
     _Version version = new _Version(code: versionCode, name: versionName);
     return App(name: name, package: package, platform: platform, version: version);
   }
@@ -22,14 +28,14 @@ class App {
         'name': name,
         'package': package,
         'platform': platform,
-        'version': version!.toJson(),
+        'version': version.toJson(),
       };
 }
 
 class _Version {
   String? code, name;
 
-  _Version({this.code, this.name});
+  _Version({this.code = 'unknown', this.name = 'unknown'});
 
   factory _Version.fromJson(Map<String, dynamic> json) {
     return _Version(

@@ -1,7 +1,7 @@
 class AppInstall {
-  int? id;
+  int id;
 
-  AppInstall({this.id});
+  AppInstall({required this.id});
 
   factory AppInstall.fromJson(Map<String, dynamic> jsonBody) {
     Map<String, dynamic> json = jsonBody['app_install'];

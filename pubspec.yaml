@@ -1,18 +1,18 @@
 name: inventiv_critic_flutter
 description: A flutter plugin for Critic integration.
-version: 0.2.0
+version: 0.3.0
 homepage: https://www.twinsunsolutions.com
 repository: https://github.com/twinsunllc/critic_flutter
 
 environment:
-  sdk: '>=2.12.0 <4.0.0'
+  sdk: ">=2.12.0 <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  battery_plus: ^4.0.1
-  connectivity_plus: ^4.0.1
-  device_info_plus: ^9.0.1
-  http: ^0.13.6
+  http: ^1.0.0
+  device_info_plus: ^9.1.1
+  package_info_plus: ^5.0.1
+  connectivity_plus: ^5.0.2
   mime: ^1.0.4
-  package_info_plus: ^4.0.1
+  battery_plus: ^5.0.1

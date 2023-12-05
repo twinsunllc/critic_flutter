@@ -2,7 +2,7 @@ import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_response.dart';
 
 class BugReportRequest {
-  String? apiToken;
+  String apiToken;
   BugReport report;
   AppInstall appInstall;
 

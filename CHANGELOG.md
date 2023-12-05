@@ -1,3 +1,9 @@
+## 0.3.0
+
+Upgraded using Flutter 3.16.2.
+Upgraded Gradle.
+Upgraded all package dependencies.
+
 ## 0.2.0
 
 Update to null safety

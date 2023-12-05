@@ -12,3 +12,4 @@ example/.flutter-plugins-dependencies
 .flutter-plugins
 .fvm/
 .flutter-plugins-dependencies
+.idea/

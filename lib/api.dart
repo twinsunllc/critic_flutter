@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:battery_plus/battery_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:battery/battery.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventiv_critic_flutter/modal/bug_report.dart';
 import 'package:inventiv_critic_flutter/modal/ping_request_modal.dart';
@@ -15,7 +15,8 @@ final String _apiUrl = 'https://critic.inventiv.io/api/v2';
 class Api {
   static Future<AppInstall> ping(PingRequest pingRequest) async {
     return await http.post(Uri.parse('$_apiUrl/ping'),
-        body: json.encode(pingRequest.toJson()), headers: {HttpHeaders.contentTypeHeader: 'application/json'}).then((response) {
+        body: json.encode(pingRequest.toJson()),
+        headers: {HttpHeaders.contentTypeHeader: 'application/json'}).then((response) {
       if (response.statusCode == 200) {
         return AppInstall.fromJson(json.decode(response.body));
       } else {
@@ -36,7 +37,8 @@ class Api {
 
     try {
       returnVal.addAll(<String, String>{
-        'device_status[battery_charging]': ((await battery.onBatteryStateChanged.first) != BatteryState.discharging).toString(),
+        'device_status[battery_charging]':
+            ((await battery.onBatteryStateChanged.first) != BatteryState.discharging).toString(),
         'device_status[battery_level]': (await battery.batteryLevel).toString(),
       });
     } catch (err) {
@@ -51,14 +53,18 @@ class Api {
     final request = http.MultipartRequest('POST', uri)
       ..fields['api_token'] = submitReportRequest.apiToken
       ..fields['app_install[id]'] = submitReportRequest.appInstall.id.toString()
-      ..fields['bug_report[description]'] = submitReportRequest.report.description
-      ..fields['bug_report[steps_to_reproduce]'] = submitReportRequest.report.stepsToReproduce
-      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier
+      ..fields['bug_report[description]'] = submitReportRequest.report.description ?? 'no description'
+      ..fields['bug_report[steps_to_reproduce]'] =
+          submitReportRequest.report.stepsToReproduce ?? 'no steps to reproduce'
+      ..fields['bug_report[user_identifier]'] = submitReportRequest.report.userIdentifier ?? 'no user identifier'
       ..fields.addAll(await Api.deviceStatus());
 
     await Future.wait(submitReportRequest.report.attachments?.map((attachment) async {
-      request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path, filename: attachment.name));
-    }));
+      if (attachment.path != null) {
+        request.files.add(await http.MultipartFile.fromPath('bug_report[attachments][]', attachment.path!,
+            filename: attachment.name));
+      }
+    }) as Iterable<Future>);
 
     final Completer<BugReport> completer = Completer<BugReport>();
 

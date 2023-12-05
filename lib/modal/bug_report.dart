@@ -13,8 +13,7 @@ class BugReport {
     this.attachments,
   });
 
-  BugReport.create(
-      {@required this.description, @required this.stepsToReproduce, this.userIdentifier = 'No user id provided'})
+  BugReport.create({@required this.description, @required this.stepsToReproduce, this.userIdentifier = 'No user id provided'})
       : assert(description != null),
         assert(stepsToReproduce != null),
         assert(userIdentifier != null);
@@ -26,7 +25,7 @@ class BugReport {
       userIdentifier: json['user_identifier'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      attachments: Attachment.fromList(json['atachments']),
+      attachments: Attachment.fromList(json['attachments']),
     );
   }
 

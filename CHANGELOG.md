@@ -1,3 +1,7 @@
+## 0.3.1
+
+File size parsing toString fix.
+
 ## 0.3.0
 
 Upgraded using Flutter 3.16.2.

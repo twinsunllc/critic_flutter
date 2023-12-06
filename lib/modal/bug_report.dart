@@ -44,7 +44,7 @@ class Attachment {
   factory Attachment.fromJson(Map<String, dynamic> json) {
     return Attachment(
       name: json['file_file_name'],
-      size: json['file_file_size'],
+      size: json['file_file_size'].toString(),
       type: json['file_content_type'],
       uploadedAt: json['file_updated_at'],
       url: json['file_url'],

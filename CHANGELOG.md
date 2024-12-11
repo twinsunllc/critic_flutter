@@ -1,3 +1,7 @@
+## 0.4.0
+
+Updated dependencies and gradle version.
+
 ## 0.3.1
 
 File size parsing toString fix.
